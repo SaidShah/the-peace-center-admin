@@ -1,0 +1,11 @@
+.heading {
+  font-weight: bold !important; 
+  text-align: center; 
+  padding-bottom: 30px;
+}
+
+@media (max-width: 600px) {
+  .heading {
+    font-size: 2rem !important;
+  }
+}
