@@ -1,3 +1,4 @@
+import "../styles/Login.css";
 import { useState } from 'react';
 import { TextField, FormLabel, Button } from "@mui/material";
 
@@ -16,28 +17,28 @@ const Login = ({handleLoginUser, isEmailError, isPasswordError}: LoginProps) => 
   };
 
   return (
-    <div style={{padding: "10% 0"}} className="">
-      <div style={{padding: "2% 2%", textAlign: "center"}}>
+    <div className="outer-container">
+      <div className="input-container">
         <div>
-          <FormLabel style={{fontSize: "2rem", fontWeight: "bold", color: "black"}}>Email </FormLabel>
+          <FormLabel className="label">Email </FormLabel>
         </div>
         <div>
-          <TextField style={{background: "white", width: "300px"}} error={isEmailError} onChange={e => setEmail(e.target.value)} size="medium" id="filled-basic" label="Email" variant="filled" placeholder="email address"/>
-        </div>
-      </div>
-
-      <div style={{padding: "2% 2%", textAlign: "center"}}>
-        <div>
-          <FormLabel style={{fontSize: "2rem", fontWeight: "bold", color: "black"}}>Password </FormLabel>
-        </div>
-        <div>
-          <TextField style={{background: "white", width: "300px", color: "black"}} error={isPasswordError} onChange={e => setPassword(e.target.value)} size="medium" id="filled-basic" label="password" variant="filled" placeholder="password"/>
+          <TextField className="login-textfield" error={isEmailError} onChange={e => setEmail(e.target.value)} size="medium" id="filled-basic" label="Email" variant="filled" placeholder="email address"/>
         </div>
       </div>
 
-      <div style={{padding: "2% 2%", textAlign: "center"}}>
+      <div className="input-container">
         <div>
-          <Button onClick={handleLogin} style={{width: "200px", height: "50px"}} disabled={email.length == 0 && password.length == 0} variant="contained">Login</Button>
+          <FormLabel className="label">Password </FormLabel>
+        </div>
+        <div>
+          <TextField className="login-textfield" error={isPasswordError} onChange={e => setPassword(e.target.value)} size="medium" id="filled-basic" label="password" variant="filled" placeholder="password"/>
+        </div>
+      </div>
+
+      <div className="input-container">
+        <div>
+          <Button onClick={handleLogin} className="login-button" disabled={(email.length == 0 || password.length == 0)} variant="contained">Login</Button>
         </div>
       </div>
     </div>

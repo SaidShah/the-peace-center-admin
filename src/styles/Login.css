@@ -1,0 +1,40 @@
+.outer-container {
+  padding: 10% 0;
+}
+
+.input-container {
+  padding: 2% 2%;
+  text-align: center;
+}
+
+.label {
+  font-size: 2.2rem !important;
+  font-weight: bold !important;
+}
+
+.login-textfield {
+  background: white;
+  width: 500px;
+  margin-top: .5% !important;
+}
+
+.login-button {
+  width: 200px;
+  height: 50px;
+}
+
+@media (max-width: 600px) {
+  .label {
+    font-size: 1.5rem !important;
+    font-weight: bold !important;
+  }
+
+  .login-textfield {
+    margin-top: 5% !important;
+    width: 300px;
+  }
+
+  .login-button {
+    margin-top: 10% !important;
+  }
+}
