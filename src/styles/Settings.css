@@ -16,6 +16,24 @@
   padding: 20px 20px;
 }
 
+.MuiGrid-grid-xs-3 {
+  color: #e1c027;
+  margin: auto;
+
+  &input {
+    font-weight: bold !important;
+  }
+}
+
+.MuiInputBase-input {
+  font-weight: bolder !important;
+  font-size: 2em !important;
+}
+
+  .login-textfield {
+    width: 200px !important;
+  }
+
 @media (max-width: 600px) {
   .current_time {
     font-size: 2rem !important;
@@ -29,5 +47,13 @@
 
   .iqama-label {
     padding: 10px 10px;
+  }
+
+  .MuiGrid-grid-xs-3 {
+    width: 100% !important;
+
+    h1 {
+      margin: 0 !important;
+    }
   }
 }
