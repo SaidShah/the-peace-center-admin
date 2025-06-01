@@ -13,7 +13,9 @@ function App() {
   const [isEmailError, setIsEmailError] = useState(false);
   const [isPasswordError, setIsPasswordError] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [adhanTimes, setAdhanTimes] = useState<{ data?: { timings?: Record<string, string> } }>({});
+  const [adhanTimes, setAdhanTimes] = useState<{
+    data?: { timings?: Record<string, string> };
+  }>({});
   const [currentTime, setCurrentTime] = useState(new Date());
   const [iqamaData, setIqamaData] = useState<any>({});
   const [fajrIqama, setFajrIqama] = useState(0);
@@ -50,7 +52,7 @@ function App() {
   useEffect(() => {
     const fetchFirebaseData = async () => {
       try {
-        const querySnapshot = await getDocs(collection(db, "abc"));
+        const querySnapshot = await getDocs(collection(db, "abcd"));
         const data: any[] = [];
         querySnapshot.forEach((doc) => {
           data.push({ id: doc.id, ...doc.data() });
@@ -64,58 +66,84 @@ function App() {
     fetchFirebaseData();
   }, []);
 
-function addMinutesAndRoundToNearest5(time: string, minAdd: number, maxAdd: number) {
-  const [hours, minutes] = time.split(":").map(Number);
-  // Add a random number between minAdd and maxAdd
-  const add = Math.floor(Math.random() * (maxAdd - minAdd + 1)) + minAdd;
-  let totalMinutes = hours * 60 + minutes + add;
+  useEffect(() => {
+    if (iqamaData) {
+      if (typeof iqamaData.fajr === "number") setFajrIqama(iqamaData.fajr);
+      if (typeof iqamaData.dhuhr === "number") setDhuhrIqama(iqamaData.dhuhr);
+      if (typeof iqamaData.asr === "number") setAsrIqama(iqamaData.asr);
+      if (typeof iqamaData.maghrib === "number")
+        setMaghribIqama(iqamaData.maghrib);
+      if (typeof iqamaData.isha === "number") setIshaIqama(iqamaData.isha);
+    }
+  }, [iqamaData]);
 
-  // Round up to the next 0 or 5
-  let roundedMinutes = Math.ceil(totalMinutes / 5) * 5;
+  function addMinutesAndRoundToNearest5(
+    time: string,
+    minAdd: number,
+    maxAdd: number
+  ) {
+    const [hours, minutes] = time.split(":").map(Number);
+    // Add a random number between minAdd and maxAdd
+    const add = Math.floor(Math.random() * (maxAdd - minAdd + 1)) + minAdd;
+    let totalMinutes = hours * 60 + minutes + add;
 
-  // Return just the number of minutes to add (rounded)
-  return roundedMinutes - (hours * 60 + minutes);
-}
+    // Round up to the next 0 or 5
+    let roundedMinutes = Math.ceil(totalMinutes / 5) * 5;
 
-const handleIqamaToggle = async () => {
-  setIqamaData((prevData: any) => ({
-    ...prevData,
-    is_manual_iqama: !prevData.is_manual_iqama,
-  }));
+    // Return just the number of minutes to add (rounded)
+    return roundedMinutes - (hours * 60 + minutes);
+  }
 
-  if (!!iqamaData.is_manual_iqama) {
+  const handleIqamaToggle = async () => {
+    const goingToManual = !iqamaData.is_manual_iqama;
+
+    setIqamaData((prevData: any) => ({
+      ...prevData,
+      is_manual_iqama: goingToManual,
+    }));
+
     let timings = adhanTimes?.data?.timings;
     const { Fajr, Dhuhr, Asr, Maghrib, Isha } = timings || {};
-    const fajrMinutesToAdd = addMinutesAndRoundToNearest5(Fajr, 20, 25);
-    const dhuhrMinutesToAdd = addMinutesAndRoundToNearest5(Dhuhr, 20, 25);
-    const asrMinutesToAdd = addMinutesAndRoundToNearest5(Asr, 20, 25);
-    const maghribMinutesToAdd = addMinutesAndRoundToNearest5(Maghrib, 10, 15);
-    const ishaMinutesToAdd = addMinutesAndRoundToNearest5(Isha, 10, 15);
 
-    // Update local state
-    setFajrIqama(fajrMinutesToAdd);
-    setDhuhrIqama(dhuhrMinutesToAdd);
-    setAsrIqama(asrMinutesToAdd);
-    setMaghribIqama(maghribMinutesToAdd);
-    setIshaIqama(ishaMinutesToAdd);
+    if (!goingToManual) {
+      const fajrMinutesToAdd = addMinutesAndRoundToNearest5(Fajr, 20, 25);
+      const dhuhrMinutesToAdd = addMinutesAndRoundToNearest5(Dhuhr, 20, 25);
+      const asrMinutesToAdd = addMinutesAndRoundToNearest5(Asr, 20, 25);
+      const maghribMinutesToAdd = addMinutesAndRoundToNearest5(Maghrib, 10, 15);
+      const ishaMinutesToAdd = addMinutesAndRoundToNearest5(Isha, 10, 15);
 
-    // Update Firestore
-    if (iqamaData?.id) {
-      try {
-        await updateDoc(doc(db, "abc", iqamaData.id), {
-          fajr: fajrMinutesToAdd,
-          dhuhr: dhuhrMinutesToAdd,
-          asr: asrMinutesToAdd,
-          maghrib: maghribMinutesToAdd,
-          isha: ishaMinutesToAdd,
-          is_manual_iqama: !iqamaData.is_manual_iqama,
-        });
-      } catch (error) {
-        console.error("Error updating iqama times:", error);
+      if (iqamaData?.id) {
+        try {
+          await updateDoc(doc(db, "abcd", iqamaData.id), {
+            fajr: fajrMinutesToAdd,
+            dhuhr: dhuhrMinutesToAdd,
+            asr: asrMinutesToAdd,
+            maghrib: maghribMinutesToAdd,
+            isha: ishaMinutesToAdd,
+            is_manual_iqama: false,
+          });
+
+          setFajrIqama(fajrMinutesToAdd);
+          setDhuhrIqama(dhuhrMinutesToAdd);
+          setAsrIqama(asrMinutesToAdd);
+          setMaghribIqama(maghribMinutesToAdd);
+          setIshaIqama(ishaMinutesToAdd);
+        } catch (error) {
+          console.error("Error updating iqama times:", error);
+        }
+      }
+    } else {
+      if (iqamaData?.id) {
+        try {
+          await updateDoc(doc(db, "abcd", iqamaData.id), {
+            is_manual_iqama: true,
+          });
+        } catch (error) {
+          console.error("Error updating manual flag:", error);
+        }
       }
     }
-  }
-};
+  };
 
   const handleLoginUser = (email: string, password: string) => {
     if (email !== "abc") {
@@ -150,26 +178,26 @@ const handleIqamaToggle = async () => {
     setLoading(false);
   }, []);
 
-const handleSaveSettings = async () => {
-  if (!iqamaData?.id) {
-    alert("No document ID found for updating!");
-    return;
-  }
-  try {
-    await updateDoc(doc(db, "abc", iqamaData.id), {
-      is_manual_iqama: iqamaData.is_manual_iqama,
-      fajr: fajrIqama,
-      dhuhr: dhuhrIqama,
-      asr: asrIqama,
-      maghrib: maghribIqama,
-      isha: ishaIqama,
-    });
-    alert("Settings saved successfully!");
-  } catch (error) {
-    console.error("Error saving settings:", error);
-    alert("Failed to save settings.");
-  }
-};
+  const handleSaveSettings = async () => {
+    if (!iqamaData?.id) {
+      alert("No document ID found for updating!");
+      return;
+    }
+    try {
+      await updateDoc(doc(db, "abcd", iqamaData.id), {
+        is_manual_iqama: iqamaData.is_manual_iqama,
+        fajr: fajrIqama,
+        dhuhr: dhuhrIqama,
+        asr: asrIqama,
+        maghrib: maghribIqama,
+        isha: ishaIqama,
+      });
+      alert("Settings saved successfully!");
+    } catch (error) {
+      console.error("Error saving settings:", error);
+      alert("Failed to save settings.");
+    }
+  };
 
   if (loading) {
     return (
@@ -208,8 +236,15 @@ const handleSaveSettings = async () => {
               ishaIqama={ishaIqama}
               setIshaIqama={setIshaIqama}
             />
-            <div style={{textAlign: "center", padding: "2%"}}>
-              <Button onClick={handleSaveSettings} style={{fontSize: "1.5rem", padding: "20px"}} size="large" variant="contained">Save Settings</Button>
+            <div style={{ textAlign: "center", padding: "2%" }}>
+              <Button
+                onClick={handleSaveSettings}
+                style={{ fontSize: "1.5rem", padding: "20px" }}
+                size="large"
+                variant="contained"
+              >
+                Save Settings
+              </Button>
             </div>
           </>
         ) : (

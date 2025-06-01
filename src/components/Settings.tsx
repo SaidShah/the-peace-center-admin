@@ -91,6 +91,27 @@ const Settings = ({
     handleIqamaToggle && handleIqamaToggle();
   };
 
+  const addMinutes = (time: string, minutesToAdd: number) => {
+
+    const [hours, minutes] = time.split(":").map((value) => parseInt(value, 10));
+  
+    const totalMinutes = minutes + minutesToAdd;
+    const newHours = (hours + Math.floor(totalMinutes / 60)) % 24; // Handle hour overflow
+    const newMinutes = totalMinutes % 60; // Remaining minutes after overflow
+  
+    return `${String(newHours).padStart(2, "0")}:${String(newMinutes).padStart(2, "0")}`;
+  };
+
+          //   useEffect(() => {
+          //   if (iqamaData) {
+          //     if (setFajrIqama) setFajrIqama(iqamaData.fajr ?? 0);
+          //     if (setDhuhrIqama) setDhuhrIqama(iqamaData.dhuhr ?? 0);
+          //     if (setAsrIqama) setAsrIqama(iqamaData.asr ?? 0);
+          //     if (setMaghribIqama) setMaghribIqama(iqamaData.maghrib ?? 0);
+          //     if (setIshaIqama) setIshaIqama(iqamaData.isha ?? 0);
+          //   }
+          // }, []);
+
   return (
     <div>
       <Typography variant="h2" color="#e1c027" className="current_time">
@@ -138,22 +159,22 @@ const Settings = ({
               break;
           }
 
-          useEffect(() => {
-            if (iqamaData) {
-              if (setFajrIqama) setFajrIqama(iqamaData.fajr ?? 0);
-              if (setDhuhrIqama) setDhuhrIqama(iqamaData.dhuhr ?? 0);
-              if (setAsrIqama) setAsrIqama(iqamaData.asr ?? 0);
-              if (setMaghribIqama) setMaghribIqama(iqamaData.maghrib ?? 0);
-              if (setIshaIqama) setIshaIqama(iqamaData.isha ?? 0);
-            }
-          }, [
-            iqamaData,
-            setFajrIqama,
-            setDhuhrIqama,
-            setAsrIqama,
-            setMaghribIqama,
-            setIshaIqama,
-          ]);
+          // useEffect(() => {
+          //   if (iqamaData) {
+          //     if (setFajrIqama) setFajrIqama(iqamaData.fajr ?? 0);
+          //     if (setDhuhrIqama) setDhuhrIqama(iqamaData.dhuhr ?? 0);
+          //     if (setAsrIqama) setAsrIqama(iqamaData.asr ?? 0);
+          //     if (setMaghribIqama) setMaghribIqama(iqamaData.maghrib ?? 0);
+          //     if (setIshaIqama) setIshaIqama(iqamaData.isha ?? 0);
+          //   }
+          // }, [
+          //   iqamaData,
+          //   setFajrIqama,
+          //   setDhuhrIqama,
+          //   setAsrIqama,
+          //   setMaghribIqama,
+          //   setIshaIqama,
+          // ]);
 
           return (
             <Grid
@@ -191,7 +212,7 @@ const Settings = ({
                   onChange={(e) => setValue && setValue(Number(e.target.value))}
                 />
                 <Grid size={12}>
-                  <h1>Iqama Time: {timing.time}</h1>
+                  <h1>Iqama Time: {addMinutes(timing.time, value)}</h1>
                 </Grid>
               </Grid>
             </Grid>
