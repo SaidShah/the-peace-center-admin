@@ -52,7 +52,7 @@ function App() {
   useEffect(() => {
     const fetchFirebaseData = async () => {
       try {
-        const querySnapshot = await getDocs(collection(db, "abcd"));
+        const querySnapshot = await getDocs(collection(db, "salah"));
         const data: any[] = [];
         querySnapshot.forEach((doc) => {
           data.push({ id: doc.id, ...doc.data() });
@@ -114,7 +114,7 @@ function App() {
 
       if (iqamaData?.id) {
         try {
-          await updateDoc(doc(db, "abcd", iqamaData.id), {
+          await updateDoc(doc(db, "salah", iqamaData.id), {
             fajr: fajrMinutesToAdd,
             dhuhr: dhuhrMinutesToAdd,
             asr: asrMinutesToAdd,
@@ -135,7 +135,7 @@ function App() {
     } else {
       if (iqamaData?.id) {
         try {
-          await updateDoc(doc(db, "abcd", iqamaData.id), {
+          await updateDoc(doc(db, "salah", iqamaData.id), {
             is_manual_iqama: true,
           });
         } catch (error) {
@@ -143,15 +143,23 @@ function App() {
         }
       }
     }
+
+    console.log(iqamaData)
   };
 
   const handleLoginUser = (email: string, password: string) => {
-    if (email !== "abc") {
+    if (email.toLocaleLowerCase() !== "abc") {
       setIsEmailError(true);
+      return;
+    } else if (isEmailError) {
+      setIsEmailError(false);
     }
 
     if (password !== "abc") {
       setIsPasswordError(true);
+      return;
+    } else if (isPasswordError) {
+      setIsPasswordError(false);
     }
 
     const days = 360;
@@ -184,7 +192,7 @@ function App() {
       return;
     }
     try {
-      await updateDoc(doc(db, "abcd", iqamaData.id), {
+      await updateDoc(doc(db, "salah", iqamaData.id), {
         is_manual_iqama: iqamaData.is_manual_iqama,
         fajr: fajrIqama,
         dhuhr: dhuhrIqama,

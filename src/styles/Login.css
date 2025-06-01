@@ -5,6 +5,10 @@
 .input-container {
   padding: 2% 2%;
   text-align: center;
+
+  .uiFormControl-root {
+  width: 500px !important
+  }
 }
 
 .label {
@@ -14,13 +18,21 @@
 
 .login-textfield {
   background: white;
-  width: 500px;
+  width: 500px !important;
   margin-top: .5% !important;
 }
 
 .login-button {
   width: 200px;
   height: 50px;
+}
+
+.outer-container {
+  .input-container {
+      .MuiTextField-root {
+        width: 400px !important;
+      }
+  }
 }
 
 @media (max-width: 600px) {
@@ -37,4 +49,12 @@
   .login-button {
     margin-top: 10% !important;
   }
+
+  .outer-container {
+  .input-container {
+      .MuiTextField-root {
+        width: 300px !important;
+      }
+  }
+}
 }

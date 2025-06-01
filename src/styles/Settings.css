@@ -20,7 +20,7 @@
   color: #e1c027;
   margin: auto;
 
-  &input {
+  input {
     font-weight: bold !important;
   }
 }

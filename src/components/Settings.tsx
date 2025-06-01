@@ -1,6 +1,6 @@
 import "../styles/Settings.css";
-import React, { useEffect } from "react";
-import { Typography, Switch, Grid, TextField, Button } from "@mui/material";
+import React from "react";
+import { Typography, Switch, Grid, TextField } from "@mui/material";
 
 type IqamaData = {
   is_manual_iqama?: boolean;
@@ -102,16 +102,6 @@ const Settings = ({
     return `${String(newHours).padStart(2, "0")}:${String(newMinutes).padStart(2, "0")}`;
   };
 
-          //   useEffect(() => {
-          //   if (iqamaData) {
-          //     if (setFajrIqama) setFajrIqama(iqamaData.fajr ?? 0);
-          //     if (setDhuhrIqama) setDhuhrIqama(iqamaData.dhuhr ?? 0);
-          //     if (setAsrIqama) setAsrIqama(iqamaData.asr ?? 0);
-          //     if (setMaghribIqama) setMaghribIqama(iqamaData.maghrib ?? 0);
-          //     if (setIshaIqama) setIshaIqama(iqamaData.isha ?? 0);
-          //   }
-          // }, []);
-
   return (
     <div>
       <Typography variant="h2" color="#e1c027" className="current_time">
@@ -158,23 +148,6 @@ const Settings = ({
               setValue = setIshaIqama;
               break;
           }
-
-          // useEffect(() => {
-          //   if (iqamaData) {
-          //     if (setFajrIqama) setFajrIqama(iqamaData.fajr ?? 0);
-          //     if (setDhuhrIqama) setDhuhrIqama(iqamaData.dhuhr ?? 0);
-          //     if (setAsrIqama) setAsrIqama(iqamaData.asr ?? 0);
-          //     if (setMaghribIqama) setMaghribIqama(iqamaData.maghrib ?? 0);
-          //     if (setIshaIqama) setIshaIqama(iqamaData.isha ?? 0);
-          //   }
-          // }, [
-          //   iqamaData,
-          //   setFajrIqama,
-          //   setDhuhrIqama,
-          //   setAsrIqama,
-          //   setMaghribIqama,
-          //   setIshaIqama,
-          // ]);
 
           return (
             <Grid
